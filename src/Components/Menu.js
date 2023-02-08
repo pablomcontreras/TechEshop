@@ -7,7 +7,7 @@ import Navbar from "react-bootstrap/Navbar";
 
 function Menu(props) {
   return (
-    <Navbar bg="light" variant="light" expand="lg">
+    <Navbar bg="light" variant="light" expand="lg" fixed="top">
       <Container>
         <Navbar.Brand>
           <img
