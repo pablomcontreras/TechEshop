@@ -5,7 +5,7 @@ function LogoCompleto(props) {
       <svg
         viewBox="0 0 280 213.66448858834508"
         preserveAspectRatio="xMidYMid meet"
-        class="css-g5ufxp"
+        className="css-g5ufxp"
         id="fdbffead"
         style={{ maxHeight: `${props.maxHeight}` }}>
         <defs id="SvgjsDefs1001"></defs>
