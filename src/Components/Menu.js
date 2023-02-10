@@ -20,14 +20,16 @@ function Menu({ traerSearchterm }) {
     <Navbar bg="light" variant="light" expand="lg" fixed="top">
       <Container>
         <Navbar.Brand>
-          <img
-            alt=""
-            src="/isologo.png"
-            width="30"
-            height="30"
-            className="d-inline-block align-top"
-          />{" "}
-          Tech Eshop
+          <Link className="nav-link" to="/">
+            <img
+              alt=""
+              src="/isologo.png"
+              width="30"
+              height="30"
+              className="d-inline-block align-top"
+            />{" "}
+            Tech Eshop
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
