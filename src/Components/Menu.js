@@ -5,7 +5,17 @@ import Nav from "react-bootstrap/Nav";
 import { Button, Form } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
 
-function Menu(props) {
+function Menu({ traerSearchterm }) {
+  let searchTerm = '';
+  const handleChange = (event) => {
+    searchTerm = event.target.value;
+    console.log("Valor de searchterm en componente Menu:", searchTerm);
+  }
+
+  const hadleSearch = () => {
+    console.log("Click en buscar, se va a enviar desde Menu al componente RouterTable el valor:", searchTerm)
+   traerSearchterm(searchTerm);
+  }
   return (
     <Navbar bg="light" variant="light" expand="lg" fixed="top">
       <Container>
@@ -38,8 +48,12 @@ function Menu(props) {
               placeholder="Buscar Productos..."
               className="me-2"
               aria-label="Buscar"
+              name="busqueda"
+              onChange={handleChange}
             />
-            <Button variant="outline-secondary">Buscar</Button>
+            <Button variant="outline-secondary" onClick={hadleSearch}>
+              Buscar
+            </Button>
           </Form>
         </Navbar.Collapse>
       </Container>

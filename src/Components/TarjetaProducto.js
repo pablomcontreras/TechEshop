@@ -1,7 +1,9 @@
 import React from 'react';
 
 function TarjetaProducto(props) {
-    const idProducto = props.id;
+    
+  //Prop a usar cuando se renderice el detalle
+  //const idProducto = props.key;
     
     return (
       <div className="col mb-5">
