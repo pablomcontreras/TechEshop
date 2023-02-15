@@ -1,9 +1,15 @@
 import React from 'react';
+import DetalleProducto from '../Pages/DetalleProducto';
 
 function TarjetaProducto(props) {
     
   //Prop a usar cuando se renderice el detalle
-  //const idProducto = props.key;
+  const idProducto = props.id;
+
+
+  const verDetalle = (idProducto) => {
+    return <DetalleProducto id={idProducto} />
+  }
     
     return (
       <div className="col mb-5">
@@ -21,7 +27,7 @@ function TarjetaProducto(props) {
           </div>
           <div className="card-footer p-4 pt-0 border-top-0 bg-transparent">
             <div className="text-center">
-              <span className="btn btn-outline-dark mt-auto" >
+              <span className="btn btn-outline-dark mt-auto"  onClick={verDetalle}>
                 Ver Producto
               </span>
             </div>

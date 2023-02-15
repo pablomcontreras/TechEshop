@@ -2,26 +2,50 @@ import React, { useState, useEffect } from "react";
 import Header from "../Components/Header";
 import Spinner from "../Components/Spinner";
 import TarjetaProducto from "../Components/TarjetaProducto";
-import { getAll } from "../Services/DataProvider";
+import { getAll, getBySearchTerm } from "../Services/DataProvider";
 
 function Dashboard(props) {
   const [productos, setProductos] = useState({});
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
-    const request = async () => {
-      try {
-        const response = await getAll();
-        const data = response?.data;
-        setProductos(data?.results);
-      } catch (e) {
-        console.log(e);
-      } finally {
-        setCargando(false);
-      }
-    };
-    request();
-  }, []);
+              setCargando(true);
+
+    if (props.searchTerm !== "") {
+      const requestST = async () => {
+        try {
+          console.log(
+            "Menu <- Dashboard: ",
+            props.searchTerm,
+            ". getBySearchTerm..."
+          );
+          const response = await getBySearchTerm(props.searchTerm);
+          const data = response?.data;
+          setProductos(data?.results);
+        } catch (e) {
+          console.log(e);
+        } finally {
+          setCargando(false);
+        }
+      };
+      requestST();
+    } else {
+      const request = async () => {
+        try {
+          const response = await getAll();
+          const data = response?.data;
+          setProductos(data?.results);
+        } catch (e) {
+          console.log(e);
+        } finally {
+          setCargando(false);
+        }
+      };
+      request();
+    }
+  }, [props.searchTerm]);
+
+  //
 
   //Mientras el estado Cargando no se resuelva muestra el Spinner.
   if (cargando) {
@@ -33,7 +57,7 @@ function Dashboard(props) {
     );
   }
   //Vista cuando se cargan los datos genericos
-  else if (!props.searchTerm) {
+  else {
     return (
       <>
         <Header />

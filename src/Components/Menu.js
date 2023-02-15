@@ -4,18 +4,25 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import { Button, Form } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
+import { useState } from "react";
 
 function Menu({ traerSearchterm }) {
-  let searchTerm = '';
+  let [searchTerm, setSearchterm] = useState();
+
+  const handleSearch = (event) => {
+    traerSearchterm(searchTerm);
+  };
+
   const handleChange = (event) => {
     searchTerm = event.target.value;
-    console.log("Valor de searchterm en componente Menu:", searchTerm);
-  }
+  };
 
-  const hadleSearch = () => {
-    console.log("Click en buscar, se va a enviar desde Menu al componente RouterTable el valor:", searchTerm)
-   traerSearchterm(searchTerm);
-  }
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleSearch();
+    }
+  };
   return (
     <Navbar bg="light" variant="light" expand="lg" fixed="top">
       <Container>
@@ -52,8 +59,10 @@ function Menu({ traerSearchterm }) {
               aria-label="Buscar"
               name="busqueda"
               onChange={handleChange}
+              onSubmit={handleSearch}
+              onKeyDown={handleKeyPress}
             />
-            <Button variant="outline-secondary" onClick={hadleSearch}>
+            <Button variant="outline-secondary" onClick={handleSearch}>
               Buscar
             </Button>
           </Form>
