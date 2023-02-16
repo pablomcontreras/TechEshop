@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import { getById } from "../Services/DataProvider";
 import Header from "../Components/Header";
 import Spinner from "../Components/Spinner";
-import ImageGallery from "react-image-gallery";
 
 
 function DetalleProducto(props) {
