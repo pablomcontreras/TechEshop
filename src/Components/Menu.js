@@ -2,11 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-import { Button, Form } from "react-bootstrap";
+import {Form } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
 import { useState } from "react";
 
 function Menu({ traerSearchterm }) {
+  // eslint-disable-next-line
   let [searchTerm, setSearchterm] = useState();
 
   const handleSearch = (event) => {
@@ -62,9 +63,12 @@ function Menu({ traerSearchterm }) {
               onSubmit={handleSearch}
               onKeyDown={handleKeyPress}
             />
-            <Button variant="outline-secondary" onClick={handleSearch}>
+            <Link
+              to="/"
+              className="btn btn-outline-dark mt-auto"
+              onClick={handleSearch}>
               Buscar
-            </Button>
+            </Link>
           </Form>
         </Navbar.Collapse>
       </Container>

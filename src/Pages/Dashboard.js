@@ -4,22 +4,27 @@ import Spinner from "../Components/Spinner";
 import TarjetaProducto from "../Components/TarjetaProducto";
 import { getAll, getBySearchTerm } from "../Services/DataProvider";
 
-function Dashboard(props) {
+function Dashboard({ searchTerm, traerIdProducto }) {
   const [productos, setProductos] = useState({});
   const [cargando, setCargando] = useState(true);
+
+
+
+
+
 
   useEffect(() => {
               setCargando(true);
 
-    if (props.searchTerm !== "") {
+    if (searchTerm !== "") {
       const requestST = async () => {
         try {
           console.log(
             "Menu <- Dashboard: ",
-            props.searchTerm,
+            searchTerm,
             ". getBySearchTerm..."
           );
-          const response = await getBySearchTerm(props.searchTerm);
+          const response = await getBySearchTerm(searchTerm);
           const data = response?.data;
           setProductos(data?.results);
         } catch (e) {
@@ -43,7 +48,7 @@ function Dashboard(props) {
       };
       request();
     }
-  }, [props.searchTerm]);
+  }, [searchTerm]);
 
   //
 

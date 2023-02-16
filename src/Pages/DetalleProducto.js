@@ -1,113 +1,109 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable jsx-a11y/alt-text */
-import React from 'react';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getById } from "../Services/DataProvider";
+import Header from "../Components/Header";
+import Spinner from "../Components/Spinner";
+import ImageGallery from "react-image-gallery";
+
 
 function DetalleProducto(props) {
+  const [cargando, setCargando] = useState(true);
+  const [producto, setProducto] = useState({});
+  const { id } = useParams();
+
+  useEffect(() => {
+    const request = async () => {
+      try {
+        const response = await getById(id);
+        setProducto(response.data);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setCargando(false);
+      }
+    };
+    request();
+  }, [id]);
+
+  console.log("Producto:", producto
+  );
+
+
+
+
+  //Mientras el estado Cargando no se resuelva muestra el Spinner.
+  if (cargando) {
     return (
-      <div class="container">
-        <div class="card">
-          <div class="container-fliud">
-            <div class="wrapper row">
-              <div class="preview col-md-6">
-                <div class="preview-pic tab-content">
-                  <div class="tab-pane active" id="pic-1">
-                    <img src="http://placekitten.com/400/252" />
+      <>
+        <Header />
+        <Spinner />
+      </>
+    );
+  } else {
+    return (
+      <div className="container">
+        <div className="card">
+          <div className="container-fliud">
+            <div className="wrapper row">
+              <div className="details col-md-6">
+                <h3 className="product-title">{producto.title}</h3>
+                <div className="rating">
+                  <div className="stars">
+                    <span className="fa fa-star checked"></span>
+                    <span className="fa fa-star checked"></span>
+                    <span className="fa fa-star checked"></span>
+                    <span className="fa fa-star"></span>
+                    <span className="fa fa-star"></span>
                   </div>
-                  <div class="tab-pane" id="pic-2">
-                    <img src="http://placekitten.com/400/252" />
-                  </div>
-                  <div class="tab-pane" id="pic-3">
-                    <img src="http://placekitten.com/400/252" />
-                  </div>
-                  <div class="tab-pane" id="pic-4">
-                    <img src="http://placekitten.com/400/252" />
-                  </div>
-                  <div class="tab-pane" id="pic-5">
-                    <img src="http://placekitten.com/400/252" />
-                  </div>
+                  <span className="review-no">41 reviews</span>
                 </div>
-                <ul class="preview-thumbnail nav nav-tabs">
-                  <li class="active">
-                    <a data-target="#pic-1" data-toggle="tab">
-                      <img src="http://placekitten.com/200/126" />
-                    </a>
-                  </li>
-                  <li>
-                    <a data-target="#pic-2" data-toggle="tab">
-                      <img src="http://placekitten.com/200/126" />
-                    </a>
-                  </li>
-                  <li>
-                    <a data-target="#pic-3" data-toggle="tab">
-                      <img src="http://placekitten.com/200/126" />
-                    </a>
-                  </li>
-                  <li>
-                    <a data-target="#pic-4" data-toggle="tab">
-                      <img src="http://placekitten.com/200/126" />
-                    </a>
-                  </li>
-                  <li>
-                    <a data-target="#pic-5" data-toggle="tab">
-                      <img src="http://placekitten.com/200/126" />
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div class="details col-md-6">
-                <h3 class="product-title">men's shoes fashion</h3>
-                <div class="rating">
-                  <div class="stars">
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star checked"></span>
-                    <span class="fa fa-star"></span>
-                    <span class="fa fa-star"></span>
-                  </div>
-                  <span class="review-no">41 reviews</span>
-                </div>
-                <p class="product-description">
+                <p className="product-description">
                   Suspendisse quos? Tempus cras iure temporibus? Eu laudantium
                   cubilia sem sem! Repudiandae et! Massa senectus enim minim
                   sociosqu delectus posuere.
                 </p>
-                <h4 class="price">
+                <h4 className="price">
                   current price: <span>$180</span>
                 </h4>
-                <p class="vote">
+                <p className="vote">
                   <strong>91%</strong> of buyers enjoyed this product!{" "}
                   <strong>(87 votes)</strong>
                 </p>
-                <h5 class="sizes">
+                <h5 className="sizes">
                   sizes:
-                  <span class="size" data-toggle="tooltip" title="small">
+                  <span className="size" data-toggle="tooltip" title="small">
                     s
                   </span>
-                  <span class="size" data-toggle="tooltip" title="medium">
+                  <span className="size" data-toggle="tooltip" title="medium">
                     m
                   </span>
-                  <span class="size" data-toggle="tooltip" title="large">
+                  <span className="size" data-toggle="tooltip" title="large">
                     l
                   </span>
-                  <span class="size" data-toggle="tooltip" title="xtra large">
+                  <span
+                    className="size"
+                    data-toggle="tooltip"
+                    title="xtra large">
                     xl
                   </span>
                 </h5>
-                <h5 class="colors">
+                <h5 className="colors">
                   colors:
                   <span
-                    class="color orange not-available"
+                    className="color orange not-available"
                     data-toggle="tooltip"
                     title="Not In store"></span>
-                  <span class="color green"></span>
-                  <span class="color blue"></span>
+                  <span className="color green"></span>
+                  <span className="color blue"></span>
                 </h5>
-                <div class="action">
-                  <button class="add-to-cart btn btn-default" type="button">
+                <div className="action">
+                  <button className="add-to-cart btn btn-default" type="button">
                     add to cart
                   </button>
-                  <button class="like btn btn-default" type="button">
-                    <span class="fa fa-heart"></span>
+                  <button className="like btn btn-default" type="button">
+                    <span className="fa fa-heart"></span>
                   </button>
                 </div>
               </div>
@@ -116,6 +112,7 @@ function DetalleProducto(props) {
         </div>
       </div>
     );
+  }
 }
 
 export default DetalleProducto;
