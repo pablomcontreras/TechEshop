@@ -2,35 +2,39 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getById } from "../Services/DataProvider";
+import { getById, getItemDescription } from "../Services/DataProvider";
 import Header from "../Components/Header";
 import Spinner from "../Components/Spinner";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {} from "@fortawesome/free-brands-svg-icons";
+import { faHandshake } from "@fortawesome/free-solid-svg-icons";
 
 function DetalleProducto(props) {
   const [cargando, setCargando] = useState(true);
   const [producto, setProducto] = useState({});
+  const [description, setDescription] = useState({});
   const { id } = useParams();
 
   useEffect(() => {
     const request = async () => {
       try {
         const response = await getById(id);
-        setProducto(response.data);
+        const description = await getItemDescription(id);
+        setProducto(response?.data);
+        setDescription(description?.data.plain_text)
       } catch (e) {
         console.log(e);
       } finally {
         setCargando(false);
       }
     };
+
     request();
+
   }, [id]);
 
-  console.log("Producto:", producto
-  );
-
-
-
+  console.log("Producto:", producto);
+  console.log("Descripcion: ", description)
 
   //Mientras el estado Cargando no se resuelva muestra el Spinner.
   if (cargando) {
@@ -58,13 +62,11 @@ function DetalleProducto(props) {
                   </div>
                   <span className="review-no">41 reviews</span>
                 </div>
-                <p className="product-description">
-                  Suspendisse quos? Tempus cras iure temporibus? Eu laudantium
-                  cubilia sem sem! Repudiandae et! Massa senectus enim minim
-                  sociosqu delectus posuere.
+                <p className="text-justify product-description">
+                  {description}
                 </p>
                 <h4 className="price">
-                  current price: <span>$180</span>
+                  Precio: <span>$ {producto.price.toLocaleString("es-AR")}</span>
                 </h4>
                 <p className="vote">
                   <strong>91%</strong> of buyers enjoyed this product!{" "}
@@ -99,7 +101,8 @@ function DetalleProducto(props) {
                 </h5>
                 <div className="action">
                   <button className="add-to-cart btn btn-default" type="button">
-                    add to cart
+                    <FontAwesomeIcon icon={faHandshake} />
+                    Comprar!
                   </button>
                   <button className="like btn btn-default" type="button">
                     <span className="fa fa-heart"></span>

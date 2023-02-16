@@ -149,12 +149,12 @@ img {
     margin-left: 20px; }
 
 .add-to-cart, .like {
-  background: #ff9f1a;
+  background: #e2d54c;
   padding: 1.2em 1.5em;
   border: none;
   text-transform: UPPERCASE;
   font-weight: bold;
-  color: #fff;
+  color: black;
   -webkit-transition: background .3s ease;
           transition: background .3s ease; }
   .add-to-cart:hover, .like:hover {
@@ -170,7 +170,7 @@ img {
     color: #fff; }
 
 .orange {
-  background: #ff9f1a; }
+  background: #fff159; }
 
 .green {
   background: #85ad00; }

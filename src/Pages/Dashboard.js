@@ -8,13 +8,8 @@ function Dashboard({ searchTerm, traerIdProducto }) {
   const [productos, setProductos] = useState({});
   const [cargando, setCargando] = useState(true);
 
-
-
-
-
-
   useEffect(() => {
-              setCargando(true);
+    setCargando(true);
 
     if (searchTerm !== "") {
       const requestST = async () => {
@@ -50,7 +45,6 @@ function Dashboard({ searchTerm, traerIdProducto }) {
     }
   }, [searchTerm]);
 
-  //
 
   //Mientras el estado Cargando no se resuelva muestra el Spinner.
   if (cargando) {
