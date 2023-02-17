@@ -3,6 +3,7 @@ import Header from "../Components/Header";
 import Spinner from "../Components/Spinner";
 import TarjetaProducto from "../Components/TarjetaProducto";
 import { getAll, getBySearchTerm } from "../Services/DataProvider";
+import firebase from "../Services/FireBase";
 
 function Dashboard({ searchTerm, traerIdProducto }) {
   const [productos, setProductos] = useState({});
@@ -46,6 +47,7 @@ function Dashboard({ searchTerm, traerIdProducto }) {
   }, [searchTerm]);
 
 
+  console.log("firebase: ", firebase);
   //Mientras el estado Cargando no se resuelva muestra el Spinner.
   if (cargando) {
     return (
