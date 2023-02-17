@@ -127,8 +127,14 @@ img {
 .checked, .price span {
   color: #ff9f1a; }
 
-.product-title, .rating, .product-description, .price, .vote, .sizes {
-  margin-bottom: 15px; }
+.product-title, .rating, .price, .vote, .sizes {
+  margin-bottom: 15px;
+text-align: center; }
+
+.product-description{
+    margin-bottom: 15px;
+ text-align: justify;  
+}
 
 .product-title {
   margin-top: 0; }

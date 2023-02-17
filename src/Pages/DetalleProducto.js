@@ -12,20 +12,33 @@ import {
   faHandshake,
   faHeart,
 } from "@fortawesome/free-solid-svg-icons";
-import { Container } from "react-bootstrap";
+import { Container, Modal, Button } from "react-bootstrap";
 import "../../node_modules/react-image-gallery/styles/css/image-gallery.css";
 
 import ImageGallery from "react-image-gallery";
 
-const images = [];
+let images = [];
 
 function DetalleProducto(props) {
   const [cargando, setCargando] = useState(true);
   const [producto, setProducto] = useState({});
   const [description, setDescription] = useState({});
   const { id } = useParams();
+  const [modalShow, setModalShow] = useState(false);
 
   console.log("PRODUCTO: ", producto);
+
+  const cargarImagenes = async () => {
+    images = [];
+    await producto.pictures?.map((picture) =>
+      images.push({
+        original: `${picture.url}`,
+        thumbnail: `${picture.url}`,
+      })
+    );
+    console.log("Imagenes: ", images);
+  };
+  cargarImagenes();
 
   useEffect(() => {
     const request = async () => {
@@ -33,14 +46,6 @@ function DetalleProducto(props) {
         const response = await getById(id);
         const description = await getItemDescription(id);
         setProducto(response?.data);
-
-        producto.pictures?.map((picture) =>
-          images.push({
-            original: `${picture.url}`,
-            thumbnail: `${picture.url}`,
-          })
-        );
-
         setDescription(description?.data.plain_text);
       } catch (e) {
         console.log(e);
@@ -48,10 +53,14 @@ function DetalleProducto(props) {
         setCargando(false);
       }
     };
-
     request();
   }, [id]);
 
+  const handleClose = () => setModalShow(false);
+  const handleBuy = () => {
+    window.open(producto.permalink, "_blank");
+    setModalShow(false);
+  };
   //Mientras el estado Cargando no se resuelva muestra el Spinner.
   if (cargando) {
     return (
@@ -62,54 +71,83 @@ function DetalleProducto(props) {
     );
   } else {
     return (
-      <Container className="marginBottom">
-        <div>
-          <div className="card">
-            <div className="container-fliud">
-              <div className="wrapper row">
-                <div className="details col-md-6">
-                  <ImageGallery items={images} />
-                </div>
-                <div className="details col-md-6">
-                  <h3 className="product-title">{producto.title}</h3>
+      <>
+        {/* <-----------MODAL -----------------> */}
+        <Modal
+          show={modalShow}
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          onEscapeKeyDown={handleClose}
+          centered>
+          <Modal.Header>
+            <Modal.Title id="contained-modal-title-vcenter">
+              Saliendo de ese sitio{" "}
+            </Modal.Title>
+          </Modal.Header>
+          <Modal.Body centered className="mx-auto">
+            <p>
+              Se abrirá una nueva pestaña a Mercado Libre, donde se podrá
+              comprar el producto.
+            </p>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={handleBuy}>Ir a Mercado Libre</Button>
+            <Button onClick={handleClose}>Volver</Button>
+          </Modal.Footer>
+        </Modal>
 
-                  <p className="text-justify product-description">
-                    {description}
-                  </p>
-                  <h4 className="price">
-                    Precio:{" "}
-                    <span>$ {producto.price.toLocaleString("es-AR")}</span>
-                  </h4>
+        {/* <-----------MODAL -----------------> */}
 
-                  <div className="action">
-                    <button
-                      className="mx-auto add-to-cart btn btn-default"
-                      type="button"
-                      title="Comprar en MercadoLibre">
-                      <FontAwesomeIcon icon={faHandshake} className="mx-3" />
-                      comprar
-                    </button>
-                    <button
-                      className="mx-2 add-to-cart btn btn-default"
-                      type="button"
-                      title="Agegar a favoritos...">
-                      <FontAwesomeIcon icon={faHeart} />
-                    </button>
-                    <button
-                      className="add-to-cart btn btn-default"
-                      type="button"
-                      title="Volver al listado">
-                      <Link to="/">
+        <Container className="marginBottom">
+          <div>
+            <div className="card">
+              <div className="container-fliud">
+                <div className="wrapper row">
+                  <div className="details col-md-6">
+                    <ImageGallery items={images} />
+                  </div>
+                  <div className="details col-md-6">
+                    <h3 className="product-title">{producto.title}</h3>
+
+                    <p className="product-description">
+                      {description}
+                    </p>
+                    <h4 className="price">
+                      Precio:{" "}
+                      <span>$ {producto.price.toLocaleString("es-AR")}</span>
+                    </h4>
+
+                    <div className="action">
+                      <button
+                        className="mx-auto add-to-cart btn btn-default"
+                        type="button"
+                        title="Comprar en MercadoLibre"
+                        onClick={() => setModalShow(true)}>
+                        <FontAwesomeIcon icon={faHandshake} className="mx-3" />
+                        comprar
+                      </button>
+                      <button
+                        className="mx-2 add-to-cart btn btn-default"
+                        type="button"
+                        title="Agegar a favoritos...">
+                        <FontAwesomeIcon icon={faHeart} />
+                      </button>
+                      <button
+                        className="add-to-cart btn btn-default"
+                        type="button"
+                        title="Volver al listado"
+                        as={Link}
+                        to="/">
                         <FontAwesomeIcon icon={faBackward} />
-                      </Link>
-                    </button>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      </>
     );
   }
 }
