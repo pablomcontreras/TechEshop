@@ -10,7 +10,6 @@ export function getAll() {
 }
 
 export function getBySearchTerm(term) {
-  console.log("Se llamo a search by term con termino:", term);
   return axios.get(
     `${baseUrl}/sites/MLA/search?q=${term}&limit=${limiteResultados.toString()}`
   );
@@ -21,9 +20,7 @@ export function getById(id) {
 }
 
 export function getItemDescription(id) {
-  console.log(
-    `Llamada de getItemDescription a: ${baseUrl}/items/${id}/description`
-  );
+
   return axios.get(`${baseUrl}/items/${id}/description`);
 
 

@@ -2,11 +2,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGoogle, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import React from 'react';
 import { Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 
 function LoginPage(props) {
   return (
-    <Container>
+    <Container className='marginBottom'>
       <section className="vh-100 py-5">
         <div className="container-fluid h-custom">
           <div className="row d-flex justify-content-center align-items-center h-100">
@@ -52,7 +53,7 @@ function LoginPage(props) {
                     className="form-control form-control-lg"
                     placeholder="email"
                   />
-                  <label className="form-label" for="form3Example3">
+                  <label className="form-label" htmlFor="form3Example3">
                     Email address
                   </label>
                 </div>
@@ -63,7 +64,7 @@ function LoginPage(props) {
                     className="form-control form-control-lg"
                     placeholder="contraseña"
                   />
-                  <label className="form-label" for="form3Example4">
+                  <label className="form-label" htmlFor="form3Example4">
                     Password
                   </label>
                 </div>
@@ -76,7 +77,7 @@ function LoginPage(props) {
                       value=""
                       id="form2Example3"
                     />
-                    <label className="form-check-label" for="form2Example3">
+                    <label className="form-check-label" htmlFor="form2Example3">
                       Recordar mis datos
                     </label>
                   </div>
@@ -94,9 +95,9 @@ function LoginPage(props) {
                   </button>
                   <p className="small fw-bold mt-2 pt-1 mb-0">
                     No tenés una cuenta?{" "}
-                    <a href="#!" className="link-danger">
+                    <Link to="/registro" className="link-danger">
                       Registrarse
-                    </a>
+                    </Link>
                   </p>
                 </div>
               </form>

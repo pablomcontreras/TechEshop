@@ -16,11 +16,6 @@ function Dashboard({ searchTerm, traerIdProducto }) {
     if (searchTerm !== "") {
       const requestST = async () => {
         try {
-          console.log(
-            "Menu <- Dashboard: ",
-            searchTerm,
-            ". getBySearchTerm..."
-          );
           const response = await getBySearchTerm(searchTerm);
           const data = response?.data;
           setProductos(data?.results);
@@ -48,7 +43,6 @@ function Dashboard({ searchTerm, traerIdProducto }) {
   }, [searchTerm]);
 
 
-  console.log("firebase: ", firebase);
   //Mientras el estado Cargando no se resuelva muestra el Spinner.
   if (cargando) {
     return (
