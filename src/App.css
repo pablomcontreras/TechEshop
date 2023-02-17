@@ -181,6 +181,12 @@ img {
 .tooltip-inner {
   padding: 1.3em; }
 
+  .marginBottom {
+    margin-bottom: 8rem;
+  }
+
+
+
 @-webkit-keyframes opacity {
   0% {
     opacity: 0;
@@ -200,4 +206,5 @@ img {
     opacity: 1;
     -webkit-transform: scale(1);
             transform: scale(1); } }
+
 

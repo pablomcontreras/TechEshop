@@ -23,12 +23,20 @@ function RouterTable(props) {
   return (
     <Router>
       <Menu traerSearchterm={traerSearchTerm} />
-      <Routes>
-        <Route path="/" element={<Dashboard searchTerm={searchTerm} idProducto={traerIdProducto} />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/registro" element={<RegisterPage />} />
-        <Route path="/detalle/:id" element={<DetalleProducto id={idSeleccionado} />} /> 
-      </Routes>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Dashboard searchTerm={searchTerm} idProducto={traerIdProducto} />
+            }
+          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/registro" element={<RegisterPage />} />
+          <Route
+            path="/detalle/:id"
+            element={<DetalleProducto id={idSeleccionado} />}
+          />
+        </Routes>
       <Footer />
     </Router>
   );

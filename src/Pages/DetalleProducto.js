@@ -7,7 +7,8 @@ import Header from "../Components/Header";
 import Spinner from "../Components/Spinner";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {} from "@fortawesome/free-brands-svg-icons";
-import { faHandshake } from "@fortawesome/free-solid-svg-icons";
+import { faBackward, faHandshake, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { Container } from "react-bootstrap";
 
 function DetalleProducto(props) {
   const [cargando, setCargando] = useState(true);
@@ -21,7 +22,7 @@ function DetalleProducto(props) {
         const response = await getById(id);
         const description = await getItemDescription(id);
         setProducto(response?.data);
-        setDescription(description?.data.plain_text)
+        setDescription(description?.data.plain_text);
       } catch (e) {
         console.log(e);
       } finally {
@@ -30,11 +31,10 @@ function DetalleProducto(props) {
     };
 
     request();
-
   }, [id]);
 
   console.log("Producto:", producto);
-  console.log("Descripcion: ", description)
+  console.log("Descripcion: ", description);
 
   //Mientras el estado Cargando no se resuelva muestra el Spinner.
   if (cargando) {
@@ -46,73 +46,60 @@ function DetalleProducto(props) {
     );
   } else {
     return (
-      <div className="container">
-        <div className="card">
-          <div className="container-fliud">
-            <div className="wrapper row">
-              <div className="details col-md-6">
-                <h3 className="product-title">{producto.title}</h3>
-                <div className="rating">
-                  <div className="stars">
-                    <span className="fa fa-star checked"></span>
-                    <span className="fa fa-star checked"></span>
-                    <span className="fa fa-star checked"></span>
-                    <span className="fa fa-star"></span>
-                    <span className="fa fa-star"></span>
+      <Container className="marginBottom">
+        <div>
+          <div className="card">
+            <div className="container-fliud">
+              <div className="wrapper row">
+                <div className="details col-md-6">
+                  <h3 className="product-title">{producto.title}</h3>
+                  <div className="rating">
+                    <div className="stars">
+                      <span className="fa fa-star checked"></span>
+                      <span className="fa fa-star checked"></span>
+                      <span className="fa fa-star checked"></span>
+                      <span className="fa fa-star"></span>
+                      <span className="fa fa-star"></span>
+                    </div>
+                    <span className="review-no">41 reviews</span>
                   </div>
-                  <span className="review-no">41 reviews</span>
-                </div>
-                <p className="text-justify product-description">
-                  {description}
-                </p>
-                <h4 className="price">
-                  Precio: <span>$ {producto.price.toLocaleString("es-AR")}</span>
-                </h4>
-                <p className="vote">
-                  <strong>91%</strong> of buyers enjoyed this product!{" "}
-                  <strong>(87 votes)</strong>
-                </p>
-                <h5 className="sizes">
-                  sizes:
-                  <span className="size" data-toggle="tooltip" title="small">
-                    s
-                  </span>
-                  <span className="size" data-toggle="tooltip" title="medium">
-                    m
-                  </span>
-                  <span className="size" data-toggle="tooltip" title="large">
-                    l
-                  </span>
-                  <span
-                    className="size"
-                    data-toggle="tooltip"
-                    title="xtra large">
-                    xl
-                  </span>
-                </h5>
-                <h5 className="colors">
-                  colors:
-                  <span
-                    className="color orange not-available"
-                    data-toggle="tooltip"
-                    title="Not In store"></span>
-                  <span className="color green"></span>
-                  <span className="color blue"></span>
-                </h5>
-                <div className="action">
-                  <button className="add-to-cart btn btn-default" type="button">
-                    <FontAwesomeIcon icon={faHandshake} />
-                    Comprar!
-                  </button>
-                  <button className="like btn btn-default" type="button">
-                    <span className="fa fa-heart"></span>
-                  </button>
+                  <p className="text-justify product-description">
+                    {description}
+                  </p>
+                  <h4 className="price">
+                    Precio:{" "}
+                    <span>$ {producto.price.toLocaleString("es-AR")}</span>
+                  </h4>
+             
+                  <div className="action">
+                    <button
+                      className="mx-auto add-to-cart btn btn-default"
+                      type="button"
+                    title="Comprar en MercadoLibre">
+                      <FontAwesomeIcon icon={faHandshake} className="mx-3"/>
+                        comprar
+                    </button>
+                    <button
+                      className="mx-2 add-to-cart btn btn-default"
+                      type="button"
+                    title="Agegar a favoritos...">
+                      <FontAwesomeIcon icon={faHeart} />
+                      
+                    </button>
+                    <button
+                      className="max-auto add-to-cart btn btn-default"
+                      type="button"
+                    title="Volver al listado">
+                      <FontAwesomeIcon icon={faBackward} />
+                   
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     );
   }
 }

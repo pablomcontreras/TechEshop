@@ -1,10 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGoogle, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import React from 'react';
+import { Container } from 'react-bootstrap';
 
 
 function LoginPage(props) {
-    return (
+  return (
+    <Container>
       <section className="vh-100 py-5">
         <div className="container-fluid h-custom">
           <div className="row d-flex justify-content-center align-items-center h-100">
@@ -39,7 +41,9 @@ function LoginPage(props) {
                 </div>
 
                 <div className="divider d-flex align-items-center my-4">
-                  <p className="lead fw-normal mb-0 me-3">O con tu cuenta de Tech Eshop</p>
+                  <p className="lead fw-normal mb-0 me-3">
+                    O con tu cuenta de Tech Eshop
+                  </p>
                 </div>
                 <div className="form-outline mb-4">
                   <input
@@ -100,7 +104,8 @@ function LoginPage(props) {
           </div>
         </div>
       </section>
-    );
+    </Container>
+  );
 };
 
 export default LoginPage;
