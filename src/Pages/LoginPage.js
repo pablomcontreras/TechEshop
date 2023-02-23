@@ -11,12 +11,10 @@ function LoginPage(props) {
     const {
       register,
       handleSubmit,
-      watch,
       formState: { errors },
     } = useForm();
     const onSubmit = (data) => console.log(data);
 
-  console.log(watch("example"));
   
   return (
     <Container className="marginBottom">
@@ -61,6 +59,7 @@ function LoginPage(props) {
                 <div className="form-outline mb-3">
                   <input
                     className="form-control form-control-lg"
+                    type={'email'}
                     {...register("Email", { required: true })}
                   />
                   {errors.exampleRequired && (
@@ -73,6 +72,7 @@ function LoginPage(props) {
 
                 <div className="form-outline mb-3">
                   <input
+                    type={'password'}
                     className="form-control form-control-lg"
                     {...register("Password", { required: true })}
                   />

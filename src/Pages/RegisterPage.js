@@ -9,6 +9,7 @@ function RegisterPage(props) {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const onSubmit = async (data) => console.log(data);
   try {
     firebase.auth().createUserWithEmailAndPassword();
@@ -76,6 +77,7 @@ function RegisterPage(props) {
 
                 <div className="form-outline mb-3">
                   <input
+                    type={"password"}
                     className="form-control form-control-lg"
                     {...register("Password", { required: true })}
                   />
@@ -84,6 +86,21 @@ function RegisterPage(props) {
                     <span>Este campo es obligatorio</span>
                   )}
                   <label className="form-label">Contraseña</label>
+                </div>
+
+                {/*REPETIR CONTRASEÑA*/}
+
+                <div className="form-outline mb-3">
+                  <input
+                    type={"password"}
+                    className="form-control form-control-lg"
+                    {...register("RepetirContraseña", { required: true })}
+                  />
+                  {/* errors will return when field validation fails  */}
+                  {errors.exampleRequired && (
+                    <span>Este campo es obligatorio</span>
+                  )}
+                  <label className="form-label">Repetir Contraseña</label>
                 </div>
 
                 {/*BOTON DE ENVIO*/}

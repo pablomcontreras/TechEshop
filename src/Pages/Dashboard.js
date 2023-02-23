@@ -4,7 +4,6 @@ import Header from "../Components/Header";
 import Spinner from "../Components/Spinner";
 import TarjetaProducto from "../Components/TarjetaProducto";
 import { getAll, getBySearchTerm } from "../Services/DataProvider";
-import firebase from "../Services/FireBase";
 
 function Dashboard({ searchTerm, traerIdProducto }) {
   const [productos, setProductos] = useState({});
