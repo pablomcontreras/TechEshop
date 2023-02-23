@@ -1,5 +1,4 @@
-/* eslint-disable jsx-a11y/anchor-is-valid */
-/* eslint-disable jsx-a11y/alt-text */
+
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getById, getItemDescription } from "../Services/DataProvider";
@@ -132,14 +131,14 @@ function DetalleProducto(props) {
                         title="Agegar a favoritos...">
                         <FontAwesomeIcon icon={faHeart} />
                       </button>
-                      <button
+                      <Link
                         className="add-to-cart btn btn-default"
                         type="button"
                         title="Volver al listado"
-                        as={Link}
-                        to="/">
+                        to="/"
+                >
                         <FontAwesomeIcon icon={faBackward} />
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

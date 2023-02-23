@@ -3,11 +3,23 @@ import { faFacebook, faGoogle, faTwitter } from "@fortawesome/free-brands-svg-ic
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useForm } from "react-hook-form";
+
 
 
 function LoginPage(props) {
+    const {
+      register,
+      handleSubmit,
+      watch,
+      formState: { errors },
+    } = useForm();
+    const onSubmit = (data) => console.log(data);
+
+  console.log(watch("example"));
+  
   return (
-    <Container className='marginBottom'>
+    <Container className="marginBottom">
       <section className="vh-100 py-5">
         <div className="container-fluid h-custom">
           <div className="row d-flex justify-content-center align-items-center h-100">
@@ -19,7 +31,7 @@ function LoginPage(props) {
               />
             </div>
             <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-              <form>
+              <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                   <p className="lead fw-normal mb-0 me-3">Ingresá con</p>
                   <button
@@ -46,27 +58,28 @@ function LoginPage(props) {
                     O con tu cuenta de Tech Eshop
                   </p>
                 </div>
-                <div className="form-outline mb-4">
-                  <input
-                    type="email"
-                    id="form3Example3"
-                    className="form-control form-control-lg"
-                    placeholder="email"
-                  />
-                  <label className="form-label" htmlFor="form3Example3">
-                    Email address
-                  </label>
-                </div>
                 <div className="form-outline mb-3">
                   <input
-                    type="password"
-                    id="form3Example4"
                     className="form-control form-control-lg"
-                    placeholder="contraseña"
+                    {...register("Email", { required: true })}
                   />
-                  <label className="form-label" htmlFor="form3Example4">
-                    Password
-                  </label>
+                  {errors.exampleRequired && (
+                    <span>Este campo es obligatorio</span>
+                  )}
+                  <label className="form-label">Email</label>
+                </div>
+
+                {/*CONTRASEÑA*/}
+
+                <div className="form-outline mb-3">
+                  <input
+                    className="form-control form-control-lg"
+                    {...register("Password", { required: true })}
+                  />
+                  {errors.exampleRequired && (
+                    <span>Este campo es obligatorio</span>
+                  )}
+                  <label className="form-label">Contraseña</label>
                 </div>
 
                 <div className="d-flex justify-content-between align-items-center">
@@ -87,14 +100,19 @@ function LoginPage(props) {
                 </div>
 
                 <div className="text-center text-lg-start mt-4 pt-2">
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-lg"
-                    style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}>
-                    Ingresar
-                  </button>
+
+                  {/*BOTON DE ENVIO*/}
+                  <div className="text-center text-lg-start mt-4 pt-2">
+                    <input
+                      type="submit"
+                      value="Registrarse"
+                      className="btn btn-primary btn-lg"
+                      style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
+                      defaultValue="Ingresar"
+                    />
+                  </div>
                   <p className="small fw-bold mt-2 pt-1 mb-0">
-                    No tenés una cuenta?{" "}
+                    No tenés una cuenta?
                     <Link to="/registro" className="link-danger">
                       Registrarse
                     </Link>
