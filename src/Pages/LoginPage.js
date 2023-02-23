@@ -2,8 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGoogle, faTwitter } from "@fortawesome/free-brands-svg-icons";
 import React from 'react';
 import { Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
+import firebase from '../Services/FireBase';
 
 
 
@@ -12,9 +13,24 @@ function LoginPage(props) {
       register,
       handleSubmit,
       formState: { errors },
-    } = useForm();
-    const onSubmit = (data) => console.log(data);
+    } = useForm({ mode: "onChange" });
 
+    const navigate = useNavigate();
+
+    const onSubmit = async (data) => {
+      console.log(data);
+      try {
+
+        const responseUser = await firebase.auth().signInWithEmailAndPassword(data.email, data.password);
+        console.log("Respuesta: ", responseUser);
+        if (responseUser.user.uid) {
+          navigate("/")
+        }
+
+      } catch (e) {
+        console.log(e);
+      }
+    };
   
   return (
     <Container className="marginBottom">
@@ -60,7 +76,7 @@ function LoginPage(props) {
                   <input
                     className="form-control form-control-lg"
                     type={'email'}
-                    {...register("Email", { required: true })}
+                    {...register("email", { required: true })}
                   />
                   {errors.exampleRequired && (
                     <span>Este campo es obligatorio</span>
@@ -74,7 +90,7 @@ function LoginPage(props) {
                   <input
                     type={'password'}
                     className="form-control form-control-lg"
-                    {...register("Password", { required: true })}
+                    {...register("password", { required: true })}
                   />
                   {errors.exampleRequired && (
                     <span>Este campo es obligatorio</span>
@@ -105,10 +121,9 @@ function LoginPage(props) {
                   <div className="text-center text-lg-start mt-4 pt-2">
                     <input
                       type="submit"
-                      value="Registrarse"
+                      value="Ingresar"
                       className="btn btn-primary btn-lg"
                       style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
-                      defaultValue="Ingresar"
                     />
                   </div>
                   <p className="small fw-bold mt-2 pt-1 mb-0">
