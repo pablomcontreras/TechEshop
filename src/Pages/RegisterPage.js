@@ -2,21 +2,38 @@ import React from "react";
 import { Container } from "react-bootstrap";
 import firebase from "../Services/FireBase";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
-function RegisterPage(props) {
+function RegisterPage() {
   const {
-    register,
-    handleSubmit,
+    register, handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({ mode: "onChange" });
 
-  const onSubmit = async (data) => console.log(data);
-  try {
-    firebase.auth().createUserWithEmailAndPassword();
-  } catch (e) {
-    console.log("Error: ", e);
-  }
-
+  const navigate = useNavigate()
+  
+const onSubmit = async (data) => {
+console.log (data) ;
+try {
+const responseUser = await firebase.auth ().createUserWithEmailAndPassword(data.email, data.password);
+  console.log("Respuesta de firebase: ", responseUser);
+  if (responseUser.user.uid) { 
+    const document = await firebase.firestore().collection("users").add({
+      userId: responseUser.user.uid,
+      nombre: data.nombre,
+      apellido: data.apellido,
+      email: data.email,
+    })
+    console.log("documento: ", document);
+    if (document) {
+      navigate("/login")
+    }
+  };
+} catch (e) {
+console.log (e);
+}
+};
+  
   return (
     <Container className="marginBottom">
       <section className="vh-100 py-5">
@@ -50,7 +67,7 @@ function RegisterPage(props) {
                   {/* include validation with required or other standard HTML validation rules */}
                   <input
                     className="form-control form-control-lg"
-                    {...register("Apellido", { required: true })}
+                    {...register("apellido", { required: true })}
                   />
                   {/* errors will return when field validation fails  */}
                   {errors.exampleRequired && (
@@ -64,7 +81,7 @@ function RegisterPage(props) {
                 <div className="form-outline mb-3">
                   <input
                     className="form-control form-control-lg"
-                    {...register("Email", { required: true })}
+                    {...register("email", { required: true })}
                   />
                   {/* errors will return when field validation fails  */}
                   {errors.exampleRequired && (
@@ -79,12 +96,16 @@ function RegisterPage(props) {
                   <input
                     type={"password"}
                     className="form-control form-control-lg"
-                    {...register("Password", { required: true })}
+                    {...register("password", { required: true, minLength:6})}
                   />
                   {/* errors will return when field validation fails  */}
                   {errors.exampleRequired && (
                     <span>Este campo es obligatorio</span>
                   )}
+                  {errors.minLength && (
+                    <span>La contraseña debe tener al menos 6 caracteres</span>
+                  )
+                  }
                   <label className="form-label">Contraseña</label>
                 </div>
 
@@ -92,7 +113,7 @@ function RegisterPage(props) {
 
                 <div className="form-outline mb-3">
                   <input
-                    type={"password"}
+                    type={"password2"}
                     className="form-control form-control-lg"
                     {...register("RepetirContraseña", { required: true })}
                   />
