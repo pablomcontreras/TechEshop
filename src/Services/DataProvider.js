@@ -25,7 +25,6 @@ export function getItemDescription(id) {
 }
 
 export async function getUserData() {
-
   const user = firebase.auth().currentUser;
 
   if (!user.uid) {
@@ -36,10 +35,8 @@ export async function getUserData() {
       .firestore()
       .collection("users")
       .where("userId", "==", user.uid)
-      .get()
-      ;
-    const currentUser =  datosUsuario.docs[0].data();
-    
+      .get();
+    const currentUser = datosUsuario.docs[0].data();
 
     let usuarioData = {
       nombre: currentUser.nombre,
@@ -53,12 +50,12 @@ export async function getUserData() {
 }
 
 export async function getFavData() {
-    const user = firebase.auth().currentUser;
+  const user = firebase.auth().currentUser;
 
-         const querySnapshot = await firebase
-          .firestore()
-           .collection("favs")
-          .where("userId", "==", user.uid)
-           .get();
-  return querySnapshot.docs
+  const querySnapshot = await firebase
+    .firestore()
+    .collection("favs")
+    .where("userId", "==", user.uid)
+    .get();
+  return querySnapshot.docs;
 }

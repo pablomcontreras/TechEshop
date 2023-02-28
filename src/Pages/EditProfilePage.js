@@ -1,10 +1,38 @@
-import React from "react";
-import { Container } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { Container, Spinner } from "react-bootstrap";
 import firebase from "../Services/FireBase";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { getUserData } from "../Services/DataProvider";
 
 function EditProfilePage() {
+
+  const [cargando, setCargando] = useState(true);
+
+  const [datosUsuario, setDatosUsuario] = useState({});
+
+  useEffect(() => {
+    setCargando(true);
+
+    const request = async () => {
+      try {
+        setDatosUsuario(await getUserData());
+      } catch (e) {
+        console.log(e);
+      } finally {
+        setCargando(false);
+      }
+    };
+    request();
+    console.log("Estado datos usuario", datosUsuario);
+  }, []);
+
+  const handleEdit = (event) => {
+
+  };
+  
+
   const {
     register,
     handleSubmit,
@@ -15,31 +43,35 @@ function EditProfilePage() {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const responseUser = await firebase
-        .auth()
-        .createUserWithEmailAndPassword(data.email, data.password);
-      console.log("Respuesta de firebase: ", responseUser);
-      if (responseUser.user.uid) {
-        const document = await firebase.firestore().collection("users").add({
-          userId: responseUser.user.uid,
-          nombre: data.nombre,
-          apellido: data.apellido,
-          email: data.email,
-        });
-        console.log("documento: ", document);
-        if (document) {
-          navigate("/login");
-        }
-      }
-    } catch (e) {
+         firebase
+      .firestore()
+      .collection("users")
+      .add({
+        nombre: event.nombre.value,
+        apellido: event.apellido.value,
+
+      });
+    console.log("Se actualizó en la base de datos el Perfil");
+    }
+
+         catch (e) {
       console.log(e);
     }
   };
+}
 
-  return (
-    <Container className="marginBottom">
-      <section className="vh-100 py-5">
-        <div className="container-fluid h-custom">
+  if (!datosUsuario) {
+    return (
+      <Spinner />
+    )
+  }
+
+  else if (datosUsuario.nombre) {
+
+    return (
+      <Container className="marginBottom">
+        <section className="vh-100 py-5">
+          <div className="container-fluid h-custom">
             <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
               <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
@@ -51,6 +83,8 @@ function EditProfilePage() {
                   <input
                     className="form-control form-control-lg"
                     {...register("nombre", { required: true })}
+                    defaultValue={datosUsuario.nombre}
+                  
                   />
                   <label className="form-label">Nombre</label>
                 </div>
@@ -61,6 +95,7 @@ function EditProfilePage() {
                   <input
                     className="form-control form-control-lg"
                     {...register("apellido", { required: true })}
+                    defaultValue={datosUsuario.apellido}
                   />
                   {errors.exampleRequired && (
                     <span>Este campo es obligatorio</span>
@@ -70,16 +105,13 @@ function EditProfilePage() {
                 <div className="form-outline mb-3">
                   <input
                     className="form-control form-control-lg"
-                    {...register("email", { required: true })}
+                    disabled={true}
+                    defaultValue={datosUsuario.email}
                   />
-                  {/* errors will return when field validation fails  */}
-                  {errors.exampleRequired && (
-                    <span>Este campo es obligatorio</span>
-                  )}
-                  <label className="form-label">Email</label>
+           
+                  <label className="form-label">Email     *sólo consulta.</label>
                 </div>
 
-               
                 {/*BOTON DE ENVIO*/}
                 <div className="text-center text-lg-start mt-4 pt-2">
                   <input
@@ -92,10 +124,11 @@ function EditProfilePage() {
               </form>
             </div>
           </div>
-        
-      </section>
-    </Container>
-  );
+        </section>
+      </Container>
+    );
+  }
 }
+
 
 export default EditProfilePage;
