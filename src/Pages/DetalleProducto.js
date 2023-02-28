@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getById, getItemDescription } from "../Services/DataProvider";
@@ -13,6 +12,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Container, Modal, Button } from "react-bootstrap";
 import "../../node_modules/react-image-gallery/styles/css/image-gallery.css";
+import firebase from "../Services/FireBase";
 
 import ImageGallery from "react-image-gallery";
 
@@ -55,10 +55,30 @@ function DetalleProducto(props) {
     request();
   }, [id]);
 
+  //Handler de cerrar modal
   const handleClose = () => setModalShow(false);
+  //Handler de comprar
   const handleBuy = () => {
     window.open(producto.permalink, "_blank");
     setModalShow(false);
+  };
+  //Handler de favorito
+  const handleFav = async () => {
+    const user = await firebase.auth().currentUser;
+    console.log("user tiene:", user);
+    await firebase
+      .firestore()
+      .collection("favs")
+      .add({
+        userId: user.uid,
+        id: producto.id,
+        title: producto.title,
+        description: description,
+        price: producto.price.toLocaleString("es-AR"),
+        thumbnail: producto.thumbnail,
+        permalink: producto.permalink,
+      });
+    console.log("Se guardó en la base de datos el favorito");
   };
   //Mientras el estado Cargando no se resuelva muestra el Spinner.
   if (cargando) {
@@ -80,7 +100,7 @@ function DetalleProducto(props) {
           centered>
           <Modal.Header>
             <Modal.Title id="contained-modal-title-vcenter">
-              Saliendo de ese sitio{" "}
+              Saliendo de ese sitio
             </Modal.Title>
           </Modal.Header>
           <Modal.Body centered className="mx-auto">
@@ -108,9 +128,7 @@ function DetalleProducto(props) {
                   <div className="details col-md-6">
                     <h3 className="product-title">{producto.title}</h3>
 
-                    <p className="product-description">
-                      {description}
-                    </p>
+                    <p className="product-description">{description}</p>
                     <h4 className="price">
                       Precio:{" "}
                       <span>$ {producto.price.toLocaleString("es-AR")}</span>
@@ -126,6 +144,7 @@ function DetalleProducto(props) {
                         comprar
                       </button>
                       <button
+                        onClick={handleFav}
                         className="mx-2 add-to-cart btn btn-default"
                         type="button"
                         title="Agegar a favoritos...">
@@ -135,8 +154,7 @@ function DetalleProducto(props) {
                         className="add-to-cart btn btn-default"
                         type="button"
                         title="Volver al listado"
-                        to="/"
-                >
+                        to="/">
                         <FontAwesomeIcon icon={faBackward} />
                       </Link>
                     </div>

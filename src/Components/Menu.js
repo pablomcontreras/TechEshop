@@ -1,14 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-import {Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import firebase from '../Services/FireBase';
 
 function Menu({ traerSearchterm }) {
   // eslint-disable-next-line
   let [searchTerm, setSearchterm] = useState();
+  let [userData, setUserdata] = useState()
+  let [loggedIn, setLoggedIn] = useState(false);
 
   const handleSearch = (event) => {
     traerSearchterm(searchTerm);
@@ -24,6 +28,43 @@ function Menu({ traerSearchterm }) {
       handleSearch();
     }
   };
+
+  const handleLogout = async () => {
+    try {
+          const auth = getAuth();
+
+          await firebase.auth().signOut(auth);
+    }
+    catch (e) {
+      console.log(e)
+    } finally {
+    }
+
+      
+
+  
+   
+  }
+
+  useEffect( () => {
+    try {
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          setUserdata(user);
+          setLoggedIn(true)
+          console.log("Usuario esta logueado, user ", user);
+        } else {
+          console.log("No hay usuario Logueado");
+                    setLoggedIn(false);
+
+        }
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  }, [loggedIn]);
+
   return (
     <Navbar bg="light" variant="light" expand="lg" fixed="top">
       <Container>
@@ -45,9 +86,16 @@ function Menu({ traerSearchterm }) {
             <Link className="nav-link" to="/">
               Inicio
             </Link>
-            <Link className="nav-link" to="/login">
-              Login
-            </Link>
+            {!loggedIn && (
+              <Link className="nav-link" to="/login">
+                Login
+              </Link>
+            )}
+            {loggedIn && (
+              <Link className="nav-link" onClick={handleLogout}>
+                Logout
+              </Link>
+            )}
             <Link className="nav-link" to="/registro">
               Registro
             </Link>

@@ -7,8 +7,12 @@ import Footer from "../Components/Footer";
 import RegisterPage from "../Pages/RegisterPage";
 import { useState } from "react";
 import DetalleProducto from "../Pages/DetalleProducto";
+import FavoritosPage from "../Pages/FavoritosPage";
 
 function RouterTable(props) {
+
+
+
   const [searchTerm, setSearchterm] = useState("");
   const [idSeleccionado, setIdSeleccionado] = useState('');
 
@@ -20,23 +24,30 @@ function RouterTable(props) {
     setIdSeleccionado(idSeleccionado);
   };
 
+  
+
   return (
     <Router>
       <Menu traerSearchterm={traerSearchTerm} />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Dashboard searchTerm={searchTerm} idProducto={traerIdProducto} />
-            }
-          />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/registro" element={<RegisterPage />} />
-          <Route
-            path="/detalle/:id"
-            element={<DetalleProducto id={idSeleccionado} />}
-          />
-        </Routes>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Dashboard searchTerm={searchTerm} idProducto={traerIdProducto} />
+          }
+        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/registro" element={<RegisterPage />} />
+        <Route path="/favoritos" element={<FavoritosPage />} />
+        <Route
+          path="/detalle/:id"
+          element={<DetalleProducto id={idSeleccionado} />}
+        />
+        <Route
+          path="/favoritos"
+          element={<FavoritosPage/>}
+        />
+      </Routes>
       <Footer />
     </Router>
   );

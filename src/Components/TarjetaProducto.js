@@ -13,7 +13,7 @@ function TarjetaProducto(props) {
           <img className="card-img-top" src={props.img} alt="..." />
           <div className="card-body p-1 align-middle">
             <div className="text-justify align-middle">
-              <h5 className="fw-bolder m-3">{trimTitle(props.title)}</h5>${" "}
+              <h5 className="fw-bolder m-3">{trimTitle(props.title)}</h5>
               {props.price.toLocaleString("es-AR")}
             </div>
           </div>

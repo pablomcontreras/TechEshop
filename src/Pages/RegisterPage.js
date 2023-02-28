@@ -18,6 +18,7 @@ try {
 const responseUser = await firebase.auth ().createUserWithEmailAndPassword(data.email, data.password);
   console.log("Respuesta de firebase: ", responseUser);
   if (responseUser.user.uid) { 
+ 
     const document = await firebase.firestore().collection("users").add({
       userId: responseUser.user.uid,
       nombre: data.nombre,
