@@ -25,7 +25,7 @@ function DetalleProducto(props) {
   const { id } = useParams();
   const [modalShow, setModalShow] = useState(false);
 
-  console.log("PRODUCTO: ", producto);
+  //console.log("PRODUCTO: ", producto);
 
   const cargarImagenes = async () => {
     images = [];
@@ -35,7 +35,7 @@ function DetalleProducto(props) {
         thumbnail: `${picture.url}`,
       })
     );
-    console.log("Imagenes: ", images);
+    //console.log("Imagenes: ", images);
   };
   cargarImagenes();
 
@@ -65,7 +65,7 @@ function DetalleProducto(props) {
   //Handler de favorito
   const handleFav = async () => {
     const user = await firebase.auth().currentUser;
-    console.log("user tiene:", user);
+    //console.log("user tiene:", user);
     await firebase
       .firestore()
       .collection("favs")

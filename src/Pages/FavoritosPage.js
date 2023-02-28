@@ -1,34 +1,24 @@
-import firebase from "../Services/FireBase";
 import Spinner from "../Components/Spinner";
 import { React, useState, useEffect } from "react";
 import Header from "../Components/Header";
 import { Container } from "react-bootstrap";
 import TarjetaFavorito from "../Components/TarjetaFavorito";
+import { getUserData } from "../Services/DataProvider";
+import { getFavData } from "../Services/DataProvider";
 
 function FavoritosPage(props) {
   const [favoritos, setFavoritos] = useState({});
   const [cargando, setCargando] = useState(true);
+  const [datosUsuario, setDatosUsuario] = useState({})
 
   useEffect(() => {
     setCargando(true);
 
-    // const getUser = async () => {
-    //   const user = await firebase.auth().currentUser;
-    //   console.log("user tiene:", user);
-    //   const getUserData = firebase.firestore().collection("users");
-
-    //   const q = query(getUserData, where("userId", "==", user.uid));
-
-    //   console.log("Informacion del usuario actual: ", q);
-    // };
-
     const request = async () => {
       try {
-        const querySnapshot = await firebase
-          .firestore()
-          .collection("favs")
-          .get();
-        setFavoritos(querySnapshot.docs);
+        setDatosUsuario(await getUserData())
+        const favoritos = await getFavData()
+        setFavoritos(favoritos);
       } catch (e) {
         console.log(e);
       } finally {
@@ -36,8 +26,10 @@ function FavoritosPage(props) {
       }
     };
     request();
+    console.log("Estado datos usuario", datosUsuario)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  let i = 0;
   //Mientras el estado Cargando no se resuelva muestra el Spinner.
   if (cargando) {
     return (
@@ -53,14 +45,15 @@ function FavoritosPage(props) {
         <Header />
         <Container className="marginBottom mt-5">
           <section>
-            <h1>NOMBRE, Estos son tus favoritos</h1>
+            <h1>{datosUsuario.nombre}, estos son tus favoritos</h1>
             <h3>
-              Desde aqui podras editarlos, consultar sus detalles, o comprarlos!
+              Desde acá podés editarlos, consultar sus detalles, o comprarlos!
             </h3>
 
-            {favoritos.map((producto) => (
+            {
+              favoritos.map((producto) => (
               <>
-                <TarjetaFavorito key={producto.id} producto={producto.data()} />
+                <TarjetaFavorito key={i++} producto={producto.data()} />
               </>
             ))}
           </section>

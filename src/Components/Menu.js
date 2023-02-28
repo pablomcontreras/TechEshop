@@ -1,18 +1,20 @@
 import React from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import { Form } from "react-bootstrap";
 import Navbar from "react-bootstrap/Navbar";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import firebase from '../Services/FireBase';
+import firebase from "../Services/FireBase";
 
 function Menu({ traerSearchterm }) {
   // eslint-disable-next-line
   let [searchTerm, setSearchterm] = useState();
-  let [userData, setUserdata] = useState()
   let [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+
 
   const handleSearch = (event) => {
     traerSearchterm(searchTerm);
@@ -31,33 +33,25 @@ function Menu({ traerSearchterm }) {
 
   const handleLogout = async () => {
     try {
-          const auth = getAuth();
+      const auth = getAuth();
 
-          await firebase.auth().signOut(auth);
-    }
-    catch (e) {
-      console.log(e)
+      await firebase.auth().signOut(auth);
+    } catch (e) {
+      console.log(e);
     } finally {
+      navigate("/");
     }
+  };
 
-      
-
-  
-   
-  }
-
-  useEffect( () => {
+  useEffect(() => {
     try {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          setUserdata(user);
-          setLoggedIn(true)
+          setLoggedIn(true);
           console.log("Usuario esta logueado, user ", user);
         } else {
-          console.log("No hay usuario Logueado");
-                    setLoggedIn(false);
-
+          setLoggedIn(false);
         }
       });
     } catch (e) {
@@ -87,18 +81,28 @@ function Menu({ traerSearchterm }) {
               Inicio
             </Link>
             {!loggedIn && (
-              <Link className="nav-link" to="/login">
-                Login
-              </Link>
+              <>
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>
+                <Link className="nav-link" to="/registro">
+                  Registro
+                </Link>
+              </>
             )}
             {loggedIn && (
-              <Link className="nav-link" onClick={handleLogout}>
-                Logout
-              </Link>
+              <>
+                <Link className="nav-link" to="/favoritos">
+                  Mis Favoritos
+                </Link>
+                <Link className="nav-link" to="/perfil">
+                  Mi Perfil
+                </Link>
+                <Link className="nav-link" onClick={handleLogout}>
+                  Logout
+                </Link>
+              </>
             )}
-            <Link className="nav-link" to="/registro">
-              Registro
-            </Link>
           </Nav>
           <Form className="d-flex">
             <Form.Control

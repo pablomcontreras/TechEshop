@@ -8,6 +8,7 @@ import RegisterPage from "../Pages/RegisterPage";
 import { useState } from "react";
 import DetalleProducto from "../Pages/DetalleProducto";
 import FavoritosPage from "../Pages/FavoritosPage";
+import EditProfilePage from "../Pages/EditProfilePage";
 
 function RouterTable(props) {
 
@@ -15,6 +16,7 @@ function RouterTable(props) {
 
   const [searchTerm, setSearchterm] = useState("");
   const [idSeleccionado, setIdSeleccionado] = useState('');
+
 
   const traerSearchTerm = (searchTerm) => {
     setSearchterm(searchTerm);
@@ -47,6 +49,9 @@ function RouterTable(props) {
           path="/favoritos"
           element={<FavoritosPage/>}
         />
+                <Route path="/favoritos" element={<FavoritosPage />} />
+        <Route path="/perfil" element={<EditProfilePage />} />
+
       </Routes>
       <Footer />
     </Router>

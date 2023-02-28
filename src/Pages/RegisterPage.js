@@ -27,7 +27,7 @@ const responseUser = await firebase.auth ().createUserWithEmailAndPassword(data.
     })
     console.log("documento: ", document);
     if (document) {
-      navigate("/login")
+      navigate("/")
     }
   };
 } catch (e) {
@@ -132,7 +132,6 @@ console.log (e);
                     value="Registrarse"
                     className="btn btn-primary btn-lg"
                     style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
-                    defaultValue="Registrarse"
                   />
                 </div>
               </form>
