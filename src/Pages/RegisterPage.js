@@ -6,35 +6,41 @@ import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
   const {
-    register, handleSubmit,
+    register,
+    handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
-  const navigate = useNavigate()
-  
-const onSubmit = async (data) => {
-console.log (data) ;
-try {
-const responseUser = await firebase.auth ().createUserWithEmailAndPassword(data.email, data.password);
-  console.log("Respuesta de firebase: ", responseUser);
-  if (responseUser.user.uid) { 
- 
-    const document = await firebase.firestore().collection("users").add({
-      userId: responseUser.user.uid,
-      nombre: data.nombre,
-      apellido: data.apellido,
-      email: data.email,
-    })
-    console.log("documento: ", document);
-    if (document) {
-      navigate("/")
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    try {
+      if (data.password !== data.RepetirContraseña) {
+        alert("Las contraseñas no coinciden");
+      } else {
+        const responseUser = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(data.email, data.password);
+        console.log("Respuesta de firebase: ", responseUser);
+        if (responseUser.user.uid) {
+          const document = await firebase.firestore().collection("users").add({
+            userId: responseUser.user.uid,
+            nombre: data.nombre,
+            apellido: data.apellido,
+            email: data.email,
+          });
+          console.log("documento: ", document);
+          if (document) {
+            navigate("/");
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
-} catch (e) {
-console.log (e);
-}
-};
-  
+
   return (
     <Container className="marginBottom">
       <section className="vh-100 py-5">
@@ -97,7 +103,7 @@ console.log (e);
                   <input
                     type={"password"}
                     className="form-control form-control-lg"
-                    {...register("password", { required: true, minLength:6})}
+                    {...register("password", { required: true, minLength: 6 })}
                   />
                   {/* errors will return when field validation fails  */}
                   {errors.exampleRequired && (
@@ -105,8 +111,7 @@ console.log (e);
                   )}
                   {errors.minLength && (
                     <span>La contraseña debe tener al menos 6 caracteres</span>
-                  )
-                  }
+                  )}
                   <label className="form-label">Contraseña</label>
                 </div>
 
@@ -114,7 +119,7 @@ console.log (e);
 
                 <div className="form-outline mb-3">
                   <input
-                    type={"password2"}
+                    type={"password"}
                     className="form-control form-control-lg"
                     {...register("RepetirContraseña", { required: true })}
                   />

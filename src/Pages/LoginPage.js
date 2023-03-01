@@ -113,9 +113,9 @@ function LoginPage(props) {
                       Recordar mis datos
                     </label>
                   </div>
-                  <a className="text-body" onClick={alertPending}>
+                  <span className="text-body" id="dedo" onClick={alertPending}>
                     Olvidaste tu contraseña?
-                  </a>
+                  </span>
                 </div>{" "}
               
                 <div className="text-center text-lg-start mt-4 pt-2">

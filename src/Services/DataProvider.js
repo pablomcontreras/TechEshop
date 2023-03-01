@@ -27,7 +27,7 @@ export function getItemDescription(id) {
 }
 
 export async function getUserData() {
-  const user = firebase.auth().currentUser;
+  const user = await firebase.auth().currentUser;
 
   if (!user.uid) {
     console.log("No hay ningun usuario logueado");
