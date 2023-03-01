@@ -13,12 +13,12 @@ function FavoritosPage(props) {
 
   useEffect(() => {
     setCargando(true);
-
     const request = async () => {
-      try {
+      
+ try {
         setDatosUsuario(await getUserData())
-        const favoritos = await getFavData()
-        setFavoritos(favoritos);
+        const favoritosLista = await getFavData()
+        setFavoritos(favoritosLista);
       } catch (e) {
         console.log(e);
       } finally {
@@ -26,8 +26,6 @@ function FavoritosPage(props) {
       }
     };
     request();
-    console.log("Estado datos usuario", datosUsuario)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   let i = 0;
   //Mientras el estado Cargando no se resuelva muestra el Spinner.
@@ -49,13 +47,13 @@ function FavoritosPage(props) {
             <h3>
               Desde acá podés editarlos, consultar sus detalles, o comprarlos!
             </h3>
-
             {
-              favoritos.map((producto) => (
+               favoritos.map((producto) => (
               <>
                 <TarjetaFavorito key={i++} producto={producto.data()} />
               </>
-            ))}
+               ))
+            }
           </section>
         </Container>
       </>

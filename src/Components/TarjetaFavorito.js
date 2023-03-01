@@ -1,14 +1,19 @@
 import React from "react";
 import { Button, Col, Container, Image, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHandshake } from "@fortawesome/free-solid-svg-icons";
+import { faHandshake, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { trimDesc } from "../Services/AuxServices";
+import { deleteItem } from "../Services/DataProvider";
 
 function TarjetaFavorito({ producto }) {
   const handleBuy = () => {
     window.open(producto.permalink, "_blank");
   };
+
+    const handleBorrar = (id) => {
+      deleteItem(id)
+    };
+
 
   return (
     <Container>
@@ -29,9 +34,6 @@ function TarjetaFavorito({ producto }) {
             />
           </Row>
           <Row>
-            <Button as={Link} to="/" variant="primary">
-              Go somewhere
-            </Button>
             <Button
               className="mx-auto add-to-cart btn btn-default"
               type="button"
@@ -39,6 +41,13 @@ function TarjetaFavorito({ producto }) {
               onClick={handleBuy}>
               <FontAwesomeIcon icon={faHandshake} className="mx-3" />
               comprar
+            </Button>
+            <Button
+              className="mx-auto  btn btn-warning"
+              type="button"
+              title="Borrar"
+              onClick={() => handleBorrar(producto.id)}>
+              <FontAwesomeIcon icon={faTrash} className="mx-3" />
             </Button>
           </Row>
         </Col>

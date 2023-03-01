@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { Container, Spinner } from "react-bootstrap";
-import firebase from "../Services/FireBase";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { getUserData } from "../Services/DataProvider";
+import { getUserData, updateUsrData } from "../Services/DataProvider";
+import { useNavigate } from "react-router-dom";
 
 function EditProfilePage() {
 
   const [cargando, setCargando] = useState(true);
+
 
   const [datosUsuario, setDatosUsuario] = useState({});
 
@@ -17,7 +17,7 @@ function EditProfilePage() {
 
     const request = async () => {
       try {
-        setDatosUsuario(await getUserData());
+        await setDatosUsuario(await getUserData());
       } catch (e) {
         console.log(e);
       } finally {
@@ -25,48 +25,28 @@ function EditProfilePage() {
       }
     };
     request();
-    console.log("Estado datos usuario", datosUsuario);
   }, []);
 
-  const handleEdit = (event) => {
-
-  };
-  
-
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onChange" });
 
-  const navigate = useNavigate();
   const onSubmit = async (data) => {
-    console.log(data);
-    try {
-         firebase
-      .firestore()
-      .collection("users")
-      .add({
-        nombre: event.nombre.value,
-        apellido: event.apellido.value,
+    await updateUsrData(data);
+    navigate("/favoritos")
 
-      });
-    console.log("Se actualizó en la base de datos el Perfil");
-    }
-
-         catch (e) {
-      console.log(e);
-    }
-  };
 }
 
-  if (!datosUsuario) {
+  if (cargando) {
     return (
       <Spinner />
     )
   }
 
-  else if (datosUsuario.nombre) {
+  else if (!cargando) {
 
     return (
       <Container className="marginBottom">
@@ -84,7 +64,6 @@ function EditProfilePage() {
                     className="form-control form-control-lg"
                     {...register("nombre", { required: true })}
                     defaultValue={datosUsuario.nombre}
-                  
                   />
                   <label className="form-label">Nombre</label>
                 </div>
@@ -108,8 +87,7 @@ function EditProfilePage() {
                     disabled={true}
                     defaultValue={datosUsuario.email}
                   />
-           
-                  <label className="form-label">Email     *sólo consulta.</label>
+                  <label className="form-label">Email *sólo consulta.</label>
                 </div>
 
                 {/*BOTON DE ENVIO*/}
@@ -121,6 +99,7 @@ function EditProfilePage() {
                     style={{ paddingLeft: "2.5rem", paddingRight: "2.5rem" }}
                   />
                 </div>
+        
               </form>
             </div>
           </div>
