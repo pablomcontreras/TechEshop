@@ -1,6 +1,6 @@
 import axios from "axios";
 import firebase from "../Services/FireBase";
-import { doc, updateDoc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 
 
 const baseUrl = "https://api.mercadolibre.com";
@@ -89,6 +89,25 @@ export async function getFavData() {
 }
 
 export async function deleteItem(id) {
-console.log("Se llamo a delete item con el id: ", id);
+  console.log("Se llamo a delete item con el id: ", id);
+
+    const getDocId = async () => {
+      const querySnapshot1 = await firebase
+        .firestore()
+        .collection("favs")
+        .where("id", "==", id)
+        .get();
+      return querySnapshot1.docs[0].id;
+    };
+  
+    const docId = await getDocId();
+
+  const docRef = doc(firebase.firestore(), "favs", `${docId}`);
+    deleteDoc(docRef).then((docRef) => {
+      console.log("El campo se actualizó correctamente");
+    });
+  
+  
+  
 }
 

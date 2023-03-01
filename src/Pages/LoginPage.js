@@ -1,37 +1,41 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faGoogle, faTwitter } from "@fortawesome/free-brands-svg-icons";
-import React from 'react';
-import { Container } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebook,
+  faGoogle,
+  faTwitter,
+} from "@fortawesome/free-brands-svg-icons";
+import React from "react";
+import { Container } from "react-bootstrap";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import firebase from '../Services/FireBase';
-
-
+import firebase from "../Services/FireBase";
 
 function LoginPage(props) {
-    const {
-      register,
-      handleSubmit,
-      formState: { errors },
-    } = useForm({ mode: "onChange" });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ mode: "onChange" });
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const onSubmit = async (data) => {
-      console.log(data);
-      try {
+  const alertPending = () => alert("Todavía no hice funcionar esto :)")
 
-        const responseUser = await firebase.auth().signInWithEmailAndPassword(data.email, data.password);
-        console.log("Respuesta: ", responseUser);
-        if (responseUser.user.uid) {
-          navigate("/")
-        }
-
-      } catch (e) {
-        console.log(e);
+  const onSubmit = async (data) => {
+    console.log(data);
+    try {
+      const responseUser = await firebase
+        .auth()
+        .signInWithEmailAndPassword(data.email, data.password);
+      console.log("Respuesta: ", responseUser);
+      if (responseUser.user.uid) {
+        navigate("/");
       }
-    };
-  
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <Container className="marginBottom">
       <section className="vh-100 py-5">
@@ -50,23 +54,25 @@ function LoginPage(props) {
                   <p className="lead fw-normal mb-0 me-3">Ingresá con</p>
                   <button
                     type="button"
-                    className="btn btn-primary btn-floating mx-1">
+                    className="btn btn-primary btn-floating mx-1"
+                    onClick={alertPending}>
                     <FontAwesomeIcon icon={faFacebook} />
                   </button>
 
                   <button
                     type="button"
-                    className="btn btn-primary btn-floating mx-1">
+                    className="btn btn-primary btn-floating mx-1"
+                    onClick={alertPending}>
                     <FontAwesomeIcon icon={faTwitter} />
                   </button>
 
                   <button
                     type="button"
-                    className="btn btn-primary btn-floating mx-1">
+                    className="btn btn-primary btn-floating mx-1"
+                    onClick={alertPending}>
                     <FontAwesomeIcon icon={faGoogle} />{" "}
                   </button>
                 </div>
-
                 <div className="divider d-flex align-items-center my-4">
                   <p className="lead fw-normal mb-0 me-3">
                     O con tu cuenta de Tech Eshop
@@ -75,7 +81,7 @@ function LoginPage(props) {
                 <div className="form-outline mb-3">
                   <input
                     className="form-control form-control-lg"
-                    type={'email'}
+                    type={"email"}
                     {...register("email", { required: true })}
                   />
                   {errors.exampleRequired && (
@@ -83,12 +89,10 @@ function LoginPage(props) {
                   )}
                   <label className="form-label">Email</label>
                 </div>
-
                 {/*CONTRASEÑA*/}
-
                 <div className="form-outline mb-3">
                   <input
-                    type={'password'}
+                    type={"password"}
                     className="form-control form-control-lg"
                     {...register("password", { required: true })}
                   />
@@ -97,7 +101,6 @@ function LoginPage(props) {
                   )}
                   <label className="form-label">Contraseña</label>
                 </div>
-
                 <div className="d-flex justify-content-between align-items-center">
                   <div className="form-check mb-0">
                     <input
@@ -110,13 +113,12 @@ function LoginPage(props) {
                       Recordar mis datos
                     </label>
                   </div>
-                  <a href="#!" className="text-body">
+                  <a className="text-body" onClick={alertPending}>
                     Olvidaste tu contraseña?
                   </a>
-                </div>
-
+                </div>{" "}
+              
                 <div className="text-center text-lg-start mt-4 pt-2">
-
                   {/*BOTON DE ENVIO*/}
                   <div className="text-center text-lg-start mt-4 pt-2">
                     <input
@@ -140,6 +142,6 @@ function LoginPage(props) {
       </section>
     </Container>
   );
-};
+}
 
 export default LoginPage;

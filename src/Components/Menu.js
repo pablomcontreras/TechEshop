@@ -93,10 +93,10 @@ function Menu({ traerSearchterm }) {
             {loggedIn && (
               <>
                 <Link className="nav-link" to="/favoritos">
-                  Mis Favoritos
+                  Favoritos
                 </Link>
                 <Link className="nav-link" to="/perfil">
-                  Mi Perfil
+                  Perfil
                 </Link>
                 <Link className="nav-link" onClick={handleLogout}>
                   Logout

@@ -10,6 +10,12 @@ function FavoritosPage(props) {
   const [favoritos, setFavoritos] = useState({});
   const [cargando, setCargando] = useState(true);
   const [datosUsuario, setDatosUsuario] = useState({})
+  const [favChange, setFavChange] = useState(false);
+
+
+    const actualizarFav = () => {
+      setFavChange(!favChange);
+    };
 
   useEffect(() => {
     setCargando(true);
@@ -26,7 +32,7 @@ function FavoritosPage(props) {
       }
     };
     request();
-  }, []);
+  }, [favChange]);
   let i = 0;
   //Mientras el estado Cargando no se resuelva muestra el Spinner.
   if (cargando) {
@@ -50,7 +56,7 @@ function FavoritosPage(props) {
             {
                favoritos.map((producto) => (
               <>
-                <TarjetaFavorito key={i++} producto={producto.data()} />
+                   <TarjetaFavorito key={i++} producto={producto.data()} favChange={actualizarFav} />
               </>
                ))
             }
