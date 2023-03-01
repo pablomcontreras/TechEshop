@@ -14,16 +14,17 @@ function Dashboard({ searchTerm, traerIdProducto }) {
 
   useEffect(() => {
     setCargando(true);
-
+    const getDataUsuario = async () => {
+      let temp = await getUserData();
+      setDatosUsuario(temp);
+}
 
     if (searchTerm !== "") {
       const requestST = async () => {
         try {
-          setDatosUsuario(await getUserData());
           const response = await getBySearchTerm(searchTerm);
           const data = response?.data;
           setProductos(data?.results);
-          console.log("Datos del usuario en el dash: ", datosUsuario)
         } catch (e) {
           console.log(e);
         } finally {
@@ -34,19 +35,19 @@ function Dashboard({ searchTerm, traerIdProducto }) {
     } else {
       const request = async () => {
         try {
-          setDatosUsuario(await getUserData());
           const response = await getAll();
           const data = response?.data;
           setProductos(data?.results);
-                    console.log("Datos del usuario en el dash: ", datosUsuario);
-
         } catch (e) {
           console.log(e);
         } finally {
           setCargando(false);
         }
       };
+      getDataUsuario();
       request();
+            console.log("Datos Usuario en dash:", datosUsuario);
+
     }
   }, [searchTerm]);
 
