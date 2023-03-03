@@ -29,10 +29,10 @@ export function getItemDescription(id) {
 export async function getUserData() {
   const user = await firebase.auth().currentUser;
 
-  if (!user.uid) {
-    console.log("No hay ningun usuario logueado");
+  if (user.uid === null) {
+    //console.log("No hay ningun usuario logueado");
   } else if (user.uid) {
-    console.log("User uid (desde auth): ", user.uid);
+    //console.log("User uid (desde auth): ", user.uid);
     let datosUsuario = await firebase
       .firestore()
       .collection("users")
@@ -46,7 +46,7 @@ export async function getUserData() {
       email: currentUser.email,
       uid: user.uid,
     };
-    console.log("Usuario Actual: ", usuarioData);
+    //console.log("Usuario Actual: ", usuarioData);
     return usuarioData;
   }
 }

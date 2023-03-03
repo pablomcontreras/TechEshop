@@ -4,18 +4,21 @@ import {
   faGoogle,
   faTwitter,
 } from "@fortawesome/free-brands-svg-icons";
-import React from "react";
+import React, {useContext} from "react";
 import { Container } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import firebase from "../Services/FireBase";
+import { AuthContext } from "../Context/AuthContext";
 
-function LoginPage(props) {
+function LoginPage() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({ mode: "onChange" });
+
+  const context = useContext(AuthContext)
 
   const navigate = useNavigate();
 
@@ -27,8 +30,8 @@ function LoginPage(props) {
       const responseUser = await firebase
         .auth()
         .signInWithEmailAndPassword(data.email, data.password);
-      console.log("Respuesta: ", responseUser);
       if (responseUser.user.uid) {
+        context.handleLogin()
         navigate("/");
       }
     } catch (e) {

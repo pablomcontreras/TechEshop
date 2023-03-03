@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
@@ -7,14 +7,14 @@ import Navbar from "react-bootstrap/Navbar";
 import { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import firebase from "../Services/FireBase";
+import { AuthContext } from "../Context/AuthContext";
 
 function Menu({ traerSearchterm }) {
   // eslint-disable-next-line
   let [searchTerm, setSearchterm] = useState();
-  let [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-
+  const { login, handleLogout, handleLogin, getUsrData } = useContext(AuthContext);
 
   const handleSearch = (event) => {
     traerSearchterm(searchTerm);
@@ -31,11 +31,11 @@ function Menu({ traerSearchterm }) {
     }
   };
 
-  const handleLogout = async () => {
+  const Logout = async () => {
     try {
       const auth = getAuth();
-
       await firebase.auth().signOut(auth);
+      handleLogout();
     } catch (e) {
       console.log(e);
     } finally {
@@ -48,16 +48,12 @@ function Menu({ traerSearchterm }) {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
-          setLoggedIn(true);
-          console.log("Usuario esta logueado, user ", user);
-        } else {
-          setLoggedIn(false);
         }
       });
     } catch (e) {
       console.log(e);
     }
-  }, [loggedIn]);
+  }, []);
 
   return (
     <Navbar bg="light" variant="light" expand="lg" fixed="top">
@@ -80,7 +76,7 @@ function Menu({ traerSearchterm }) {
             <Link className="nav-link" to="/">
               Inicio
             </Link>
-            {!loggedIn && (
+            {!login && (
               <>
                 <Link className="nav-link" to="/login">
                   Login
@@ -90,7 +86,7 @@ function Menu({ traerSearchterm }) {
                 </Link>
               </>
             )}
-            {loggedIn && (
+            {login && (
               <>
                 <Link className="nav-link" to="/favoritos">
                   Favoritos
@@ -98,7 +94,7 @@ function Menu({ traerSearchterm }) {
                 <Link className="nav-link" to="/perfil">
                   Perfil
                 </Link>
-                <Link className="nav-link" onClick={handleLogout}>
+                <Link className="nav-link" onClick={Logout}>
                   Logout
                 </Link>
               </>

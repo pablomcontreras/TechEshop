@@ -1,24 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Container } from "react-bootstrap";
 import Header from "../Components/Header";
 import Spinner from "../Components/Spinner";
 import TarjetaProducto from "../Components/TarjetaProducto";
-import { getAll, getBySearchTerm, getUserData} from "../Services/DataProvider";
+import { AuthContext } from "../Context/AuthContext";
+import { getAll, getBySearchTerm} from "../Services/DataProvider";
 
 function Dashboard({ searchTerm, traerIdProducto }) {
   const [productos, setProductos] = useState({});
   const [cargando, setCargando] = useState(true);
-  const [datosUsuario, setDatosUsuario] = useState({});
+  const { userData } = useContext(AuthContext)
+  
 
-
-
-  useEffect(() => {
+useEffect(() => {
     setCargando(true);
-    const getDataUsuario = async () => {
-      let temp = await getUserData();
-      setDatosUsuario(temp);
-}
-
     if (searchTerm !== "") {
       const requestST = async () => {
         try {
@@ -39,18 +34,15 @@ function Dashboard({ searchTerm, traerIdProducto }) {
           const data = response?.data;
           setProductos(data?.results);
         } catch (e) {
-          console.log(e);
+          //console.log(e);
         } finally {
           setCargando(false);
         }
       };
-      getDataUsuario();
       request();
-            console.log("Datos Usuario en dash:", datosUsuario);
 
     }
   }, [searchTerm]);
-
 
   //Mientras el estado Cargando no se resuelva muestra el Spinner.
   if (cargando) {
@@ -68,10 +60,10 @@ function Dashboard({ searchTerm, traerIdProducto }) {
         <Header />
         <Container className="marginBottom mt-5">
           <section>
-            {datosUsuario.nombre && (
-              <h1>¡Bienvenid@ de vuelta {`${datosUsuario.nombre}`}!</h1>
+            {userData.nombre && (
+              <h1>¡Bienvenid@ de vuelta {`${userData.nombre}`}!</h1>
             )}
-            {!datosUsuario.nombre && (
+            {!userData.nombre && (
               <h1>¡Bienvenid@ a nuestra tienda!</h1>
             )}
             <h3>Descubrí nuestros productos o usá nuestro buscador</h3>

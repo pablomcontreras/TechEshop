@@ -9,6 +9,7 @@ import { useState } from "react";
 import DetalleProducto from "../Pages/DetalleProducto";
 import FavoritosPage from "../Pages/FavoritosPage";
 import EditProfilePage from "../Pages/EditProfilePage";
+import AuthProvider from "../Context/AuthContext";
 
 function RouterTable(props) {
 
@@ -30,30 +31,28 @@ function RouterTable(props) {
 
   return (
     <Router>
-      <Menu traerSearchterm={traerSearchTerm} />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Dashboard searchTerm={searchTerm} idProducto={traerIdProducto} />
-          }
-        />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/registro" element={<RegisterPage />} />
-        <Route path="/favoritos" element={<FavoritosPage />} />
-        <Route
-          path="/detalle/:id"
-          element={<DetalleProducto id={idSeleccionado} />}
-        />
-        <Route
-          path="/favoritos"
-          element={<FavoritosPage/>}
-        />
-                <Route path="/favoritos" element={<FavoritosPage />} />
-        <Route path="/perfil" element={<EditProfilePage />} />
-
-      </Routes>
-      <Footer />
+      <AuthProvider>
+        <Menu traerSearchterm={traerSearchTerm} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Dashboard searchTerm={searchTerm} idProducto={traerIdProducto} />
+            }
+          />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/registro" element={<RegisterPage />} />
+          <Route path="/favoritos" element={<FavoritosPage />} />
+          <Route
+            path="/detalle/:id"
+            element={<DetalleProducto id={idSeleccionado} />}
+          />
+          <Route path="/favoritos" element={<FavoritosPage />} />
+          <Route path="/favoritos" element={<FavoritosPage />} />
+          <Route path="/perfil" element={<EditProfilePage />} />
+        </Routes>
+        <Footer />
+      </AuthProvider>
     </Router>
   );
 }
