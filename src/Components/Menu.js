@@ -14,7 +14,11 @@ function Menu({ traerSearchterm }) {
   let [searchTerm, setSearchterm] = useState();
   const navigate = useNavigate();
 
-  const { login, handleLogout, handleLogin, getUsrData } = useContext(AuthContext);
+  const { login, handleLogout, handleLogin, getUsrData, updateLoginState } = useContext(AuthContext);
+
+  updateLoginState()
+
+
 
   const handleSearch = (event) => {
     traerSearchterm(searchTerm);
@@ -48,7 +52,7 @@ function Menu({ traerSearchterm }) {
       const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
-        }
+handleLogin()        }
       });
     } catch (e) {
       console.log(e);
