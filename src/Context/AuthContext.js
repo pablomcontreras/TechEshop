@@ -1,4 +1,3 @@
-import { faHandsAmericanSignLanguageInterpreting } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from "react";
 import firebase from "../Services/FireBase";
 
@@ -10,13 +9,7 @@ const AuthProvider = ({ children }) => {
   const [login, setLogin] = useState(false);
   const [userData, setUserData] = useState({});
 
-  const updateLoginState = async () => {
-    let getState = await JSON.parse(sessionStorage.getItem("isLoggedIn"));
-    console.log("LoginState en sessionStorage : ", getState)
-    if (getState) {
-      setLogin(getState)
-    }
-  }
+
 
   const handleGetUsrData = async () => {
     firebase.auth().onAuthStateChanged(async (user) => {
@@ -55,18 +48,16 @@ const AuthProvider = ({ children }) => {
 
   const handleLogin = () => {
     setLogin(true);
-    sessionStorage.setItem("isLoggedIn","true")
   };
 
   const handleLogout = () => {
     setLogin(false);
-        sessionStorage.setItem("isLoggedIn", "false");
 
   };
 
   return (
     <AuthContext.Provider
-      value={{ login, handleLogin, handleLogout, userData, updateLoginState }}>
+      value={{ login, handleLogin, handleLogout, userData }}>
       {children}
     </AuthContext.Provider>
   );

@@ -16,7 +16,6 @@ function Menu({ traerSearchterm }) {
 
   const { login, handleLogout, handleLogin, getUsrData, updateLoginState } = useContext(AuthContext);
 
-  updateLoginState()
 
 
 

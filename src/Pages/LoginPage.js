@@ -25,11 +25,11 @@ function LoginPage() {
   const alertPending = () => alert("Todavía no hice funcionar esto :)")
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       const responseUser = await firebase
         .auth()
         .signInWithEmailAndPassword(data.email, data.password);
+
       if (responseUser.user.uid) {
         context.handleLogin()
         navigate("/");
@@ -38,6 +38,9 @@ function LoginPage() {
       console.log(e);
     }
   };
+
+
+
 
   return (
     <Container className="marginBottom">
@@ -120,7 +123,6 @@ function LoginPage() {
                     Olvidaste tu contraseña?
                   </span>
                 </div>{" "}
-              
                 <div className="text-center text-lg-start mt-4 pt-2">
                   {/*BOTON DE ENVIO*/}
                   <div className="text-center text-lg-start mt-4 pt-2">
